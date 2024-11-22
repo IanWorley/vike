@@ -86,12 +86,14 @@ pages/product/@id/+Page.jsx
 pages/product/@id/+Layout.jsx
 ```
 
-> The directory `(marketing)` is used for <Link href="/routing#groups">grouping</Link> and is ignored by <Link href="/filesystem-routing">Filesystem Routing</Link>.
+> The directory `(marketing)` is ignored by <Link href="/filesystem-routing">Filesystem Routing</Link>: it's used for <Link href="/routing#groups">grouping</Link>.
+
+Where:
 
 - `pages/(marketing)/+Layout.jsx` applies to all pages living at `pages/(marketing)/**`
 - `pages/admin-panel/+Layout.jsx` applies to all pages living at `pages/admin-panel/**`
 - `pages/product/@id/+Layout.jsx` applies to one page `pages/product/@id/+Page.jsx`
-  > Technically `pages/product/@id/+Layout.jsx` applies to all pages at `/pages/product/@id/**` but there is only one page living there.
+   > Technically, `pages/product/@id/+Layout.jsx` applies to all pages at `/pages/product/@id/**` but there is only one page living there.
 
 ### Defaults
 
@@ -120,6 +122,60 @@ export default {
 ### Domain-driven File Structure
 
 You can use a <Link href="/routing#domain-driven-file-structure">domain-driven file structure</Link> for better organization and for improved configuration inheritance.
+
+### Powerful
+
+You can use config inheritance to have multiple and completely different stacks within the same app.
+
+For example:
+
+```js
+// pages/admin/+config.js
+
+// Configuration that applies to all admin pages.
+
+import vue from 'vike-vue/config'
+import telefunc from 'vike-telefunc/config'
+
+// Vue + SPA + RPC
+export default {
+  ssr: false,
+  extends: [vue, telefunc]
+}
+```
+
+```js
+// pages/product/@id/+config.js
+
+// Configuration that applies to the product page.
+
+import react from 'vike-react/config'
+import graphql from 'vike-react-apollo/config'
+
+// React + SSR + GraphQL
+export default {
+  ssr: true,
+  extends: [react, graphql]
+}
+```
+
+```js
+// pages/(marketing)/+config.js
+
+// Configuration that applies to all marketing pages.
+
+import vue from 'vike-vue/config'
+
+// Vue + SSR
+export default {
+  ssr: true,
+  extends: [vue]
+}
+```
+
+> While it's in principle possible, [there is currently a blocker](https://github.com/vikejs/vike/issues/1813) for being able to use `vike-vue` and `vike-react` within the same app.
+
+> `vike-telefunc` doesn't exist yet: it's the upcoming integration that will enable you to use RPC for fetching initial data (instead of using <Link href="/data"><code>+data</code></Link>).
 
 
 ## Pointer imports
