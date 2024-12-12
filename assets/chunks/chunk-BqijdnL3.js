@@ -1,1 +1,0 @@
-import{j as e}from"./chunk-9l_mEv3j.js";import{L as r}from"./chunk-CDWsbyFF.js";/* empty css              *//* empty css              *//* empty css              */function n(){return e.jsxs(e.Fragment,{children:["From the perspective of the server, Vike is"," ",e.jsx(r,{text:"just a server middleware",href:"/integration#server-side-tools"}),"."]})}export{n as J};
